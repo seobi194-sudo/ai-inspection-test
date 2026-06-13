@@ -201,10 +201,33 @@ function extractGeminiText(data) {
   const parts = [];
   for (const candidate of data.candidates || []) {
     for (const part of candidate?.content?.parts || []) {
-      if (typeof part.text === "string") parts.push(part.text);
+      if (typeof part.text === "string" && !part.thought) parts.push(part.text);
     }
   }
-  return parts.join("").replace(/```json|```/g, "").trim();
+  return parts.join("\n").trim();
+}
+
+function parseGeminiJson(text) {
+  let clean = String(text || "")
+    .replace(/^\uFEFF/, "")
+    .replace(/```(?:json)?/gi, "")
+    .replace(/```/g, "")
+    .trim();
+
+  try {
+    return JSON.parse(clean);
+  } catch {}
+
+  const firstBrace = clean.indexOf("{");
+  const lastBrace = clean.lastIndexOf("}");
+  if (firstBrace >= 0 && lastBrace > firstBrace) {
+    const objectText = clean.slice(firstBrace, lastBrace + 1);
+    try {
+      return JSON.parse(objectText);
+    } catch {}
+  }
+
+  throw new Error("Gemini 분석 결과 형식을 읽지 못했습니다. 응답이 중간에 잘렸거나 형식이 깨졌습니다.");
 }
 
 function normalizeResult(raw, stage) {
@@ -315,7 +338,10 @@ app.post("/api/analyze", upload.single("photo"), async (req, res) => {
           }],
           generationConfig: {
             temperature: 0.1,
-            maxOutputTokens: 1600,
+            maxOutputTokens: 4096,
+            thinkingConfig: {
+              thinkingBudget: 0
+            },
             responseMimeType: "application/json",
             responseJsonSchema: RESULT_SCHEMA
           }
@@ -355,15 +381,23 @@ app.post("/api/analyze", upload.single("photo"), async (req, res) => {
       return res.status(422).json({ error: message });
     }
 
-    const outputText = extractGeminiText(data);
-    if (!outputText) throw new Error("Gemini가 분석 결과를 반환하지 않았습니다.");
+    const candidate = data.candidates[0] || {};
+    const finishReason = candidate.finishReason || "";
 
-    let parsed;
-    try {
-      parsed = JSON.parse(outputText);
-    } catch {
-      throw new Error("Gemini 분석 결과 형식을 읽지 못했습니다. 다시 시도해주세요.");
+    if (finishReason === "MAX_TOKENS") {
+      return res.status(422).json({
+        error: "Gemini 답변이 길이 제한 때문에 중간에 잘렸습니다. 다시 시도해주세요."
+      });
     }
+
+    const outputText = extractGeminiText(data);
+    if (!outputText) {
+      return res.status(422).json({
+        error: `Gemini가 분석 결과를 반환하지 않았습니다.${finishReason ? " 종료 사유: " + finishReason : ""}`
+      });
+    }
+
+    const parsed = parseGeminiJson(outputText);
 
     res.json({
       provider: "Google Gemini",
