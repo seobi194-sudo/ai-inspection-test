@@ -8,9 +8,9 @@ app.disable("x-powered-by");
 app.set("trust proxy", 1);
 
 const PORT = Number(process.env.PORT || 3000);
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY || "";
-const OPENAI_MODEL = process.env.OPENAI_MODEL || "gpt-5-mini";
-const OPENAI_BASE_URL = (process.env.OPENAI_BASE_URL || "https://api.openai.com/v1").replace(/\/$/, "");
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY || "";
+const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-2.5-flash";
+const GEMINI_BASE_URL = (process.env.GEMINI_BASE_URL || "https://generativelanguage.googleapis.com/v1beta").replace(/\/$/, "");
 const MAX_REQUESTS_PER_IP = Math.max(1, Number(process.env.MAX_REQUESTS_PER_IP || 10));
 const TEST_ACCESS_CODE = String(process.env.TEST_ACCESS_CODE || "").trim();
 
@@ -197,15 +197,14 @@ function buildPrompt(proc, stage) {
 10. 발주자와 시공자 모두 이해할 수 있는 중립적인 한국어로 답합니다.`;
 }
 
-function extractOutputText(data) {
-  if (typeof data.output_text === "string" && data.output_text.trim()) return data.output_text.trim();
+function extractGeminiText(data) {
   const parts = [];
-  for (const output of data.output || []) {
-    for (const content of output.content || []) {
-      if (content.type === "output_text" && content.text) parts.push(content.text);
+  for (const candidate of data.candidates || []) {
+    for (const part of candidate?.content?.parts || []) {
+      if (typeof part.text === "string") parts.push(part.text);
     }
   }
-  return parts.join("").trim();
+  return parts.join("").replace(/```json|```/g, "").trim();
 }
 
 function normalizeResult(raw, stage) {
@@ -261,8 +260,9 @@ function consumeRateLimit(ip) {
 
 app.get("/health", (_req, res) => res.json({ ok: true }));
 app.get("/api/status", (_req, res) => res.json({
-  configured: Boolean(OPENAI_API_KEY),
-  model: OPENAI_MODEL,
+  configured: Boolean(GEMINI_API_KEY),
+  provider: "Google Gemini",
+  model: GEMINI_MODEL,
   maxRequestsPerIp: MAX_REQUESTS_PER_IP,
   accessCodeRequired: Boolean(TEST_ACCESS_CODE)
 }));
@@ -270,8 +270,8 @@ app.get("/api/processes", (_req, res) => res.json(DATA));
 
 app.post("/api/analyze", upload.single("photo"), async (req, res) => {
   try {
-    if (!OPENAI_API_KEY) {
-      return res.status(503).json({ error: "Render 환경변수 OPENAI_API_KEY가 설정되지 않았습니다." });
+    if (!GEMINI_API_KEY) {
+      return res.status(503).json({ error: "Render 환경변수 GEMINI_API_KEY가 설정되지 않았습니다." });
     }
     if (TEST_ACCESS_CODE && String(req.body.accessCode || "").trim() !== TEST_ACCESS_CODE) {
       return res.status(403).json({ error: "테스트 코드가 올바르지 않습니다." });
@@ -286,37 +286,38 @@ app.post("/api/analyze", upload.single("photo"), async (req, res) => {
       return res.status(429).json({ error: `하루 테스트 한도(${MAX_REQUESTS_PER_IP}회)를 초과했습니다.` });
     }
 
-    const imageUrl = `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`;
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 90000);
+    const endpoint =
+      `${GEMINI_BASE_URL}/models/${encodeURIComponent(GEMINI_MODEL)}:generateContent`;
 
     let apiResponse;
     try {
-      apiResponse = await fetch(`${OPENAI_BASE_URL}/responses`, {
+      apiResponse = await fetch(endpoint, {
         method: "POST",
         signal: controller.signal,
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${OPENAI_API_KEY}`
+          "x-goog-api-key": GEMINI_API_KEY
         },
         body: JSON.stringify({
-          model: OPENAI_MODEL,
-          store: false,
-          max_output_tokens: 1200,
-          input: [{
+          contents: [{
             role: "user",
-            content: [
-              { type: "input_text", text: buildPrompt(proc, stage) },
-              { type: "input_image", image_url: imageUrl, detail: "high" }
+            parts: [
+              { text: buildPrompt(proc, stage) },
+              {
+                inline_data: {
+                  mime_type: req.file.mimetype,
+                  data: req.file.buffer.toString("base64")
+                }
+              }
             ]
           }],
-          text: {
-            format: {
-              type: "json_schema",
-              name: "inspection_result",
-              strict: true,
-              schema: RESULT_SCHEMA
-            }
+          generationConfig: {
+            temperature: 0.1,
+            maxOutputTokens: 1600,
+            responseMimeType: "application/json",
+            responseJsonSchema: RESULT_SCHEMA
           }
         })
       });
@@ -326,20 +327,53 @@ app.post("/api/analyze", upload.single("photo"), async (req, res) => {
 
     const data = await apiResponse.json();
     if (!apiResponse.ok) {
-      let message = data?.error?.message || `AI 요청 실패 (${apiResponse.status})`;
-      if (apiResponse.status === 401) message = "OpenAI API 키가 올바르지 않습니다.";
-      if (apiResponse.status === 429) message = "OpenAI API 사용 한도 또는 결제 상태를 확인해주세요.";
+      let message =
+        data?.error?.message ||
+        data?.message ||
+        `Gemini 요청 실패 (${apiResponse.status})`;
+
+      if (apiResponse.status === 400) {
+        message = "Gemini 요청 형식 또는 모델 설정을 확인해주세요. " + message;
+      }
+      if (apiResponse.status === 401 || apiResponse.status === 403) {
+        message = "Gemini API 키가 올바르지 않거나 사용 권한이 없습니다.";
+      }
+      if (apiResponse.status === 404) {
+        message = `Gemini 모델(${GEMINI_MODEL})을 찾을 수 없습니다. 모델명을 확인해주세요.`;
+      }
+      if (apiResponse.status === 429) {
+        message = "Gemini 무료 사용 한도에 도달했습니다. 잠시 후 다시 시도해주세요.";
+      }
       return res.status(apiResponse.status).json({ error: message });
     }
 
-    const outputText = extractOutputText(data);
-    if (!outputText) throw new Error("AI가 분석 결과를 반환하지 않았습니다.");
-    const parsed = JSON.parse(outputText);
-    res.json({ model: OPENAI_MODEL, result: normalizeResult(parsed, stage) });
+    if (!Array.isArray(data.candidates) || data.candidates.length === 0) {
+      const blockReason = data?.promptFeedback?.blockReason;
+      const message = blockReason
+        ? `Gemini가 사진 분석을 중단했습니다: ${blockReason}`
+        : "Gemini가 분석 결과를 반환하지 않았습니다.";
+      return res.status(422).json({ error: message });
+    }
+
+    const outputText = extractGeminiText(data);
+    if (!outputText) throw new Error("Gemini가 분석 결과를 반환하지 않았습니다.");
+
+    let parsed;
+    try {
+      parsed = JSON.parse(outputText);
+    } catch {
+      throw new Error("Gemini 분석 결과 형식을 읽지 못했습니다. 다시 시도해주세요.");
+    }
+
+    res.json({
+      provider: "Google Gemini",
+      model: data.modelVersion || GEMINI_MODEL,
+      result: normalizeResult(parsed, stage)
+    });
   } catch (error) {
     console.error(error);
     if (error.name === "AbortError") {
-      return res.status(504).json({ error: "AI 응답 시간이 길어 중단되었습니다. 다시 시도해주세요." });
+      return res.status(504).json({ error: "Gemini 응답 시간이 길어 중단되었습니다. 다시 시도해주세요." });
     }
     res.status(500).json({ error: error.message || "분석 중 문제가 발생했습니다." });
   }
@@ -379,7 +413,7 @@ const html = String.raw`<!doctype html>
 <div id="accessWrap" class="access hidden"><label>테스트 코드<input id="accessCode" type="password" autocomplete="off" placeholder="전달받은 테스트 코드"></label></div>
 <div id="empty"><div class="upload">📷<b>사진 촬영 또는 앨범 선택</b><span>전체 모습과 핵심 부위가 함께 보이게 촬영하세요.</span></div><div class="buttons"><button id="cameraButton" class="primary" type="button">사진 촬영</button><button id="galleryButton" class="secondary" type="button">앨범 선택</button></div><input id="cameraInput" type="file" accept="image/jpeg,image/png,image/webp" capture="environment" hidden><input id="galleryInput" type="file" accept="image/jpeg,image/png,image/webp" hidden></div>
 <div id="previewBox" class="hidden"><img id="preview" alt="선택한 사진"><div class="buttons"><button id="againButton" class="secondary" type="button">다시 선택</button><button id="analyzeButton" class="primary" type="button">AI 검수 시작</button></div></div>
-<div id="loading" class="loading hidden"><div class="spinner"></div><p>사진 종류와 선택 단계를 먼저 확인하고 있습니다…</p></div><div id="message" class="msg hidden"></div><p class="privacy">사진은 이 앱 서버에 저장하지 않으며 AI 분석을 위해 OpenAI로 전송됩니다.</p></section>
+<div id="loading" class="loading hidden"><div class="spinner"></div><p>사진 종류와 선택 단계를 먼저 확인하고 있습니다…</p></div><div id="message" class="msg hidden"></div><p class="privacy">사진은 이 앱 서버에 저장하지 않으며 AI 분석을 위해 Google Gemini로 전송됩니다.</p></section>
 <section id="result" class="result hidden"><b>AI 1차 확인표</b><div id="match" class="match"></div><div id="scene" class="scene"></div><div id="items"></div><div class="summary"><p id="summary"></p><p id="next"></p></div><div class="disclaimer">본 결과는 사진에서 보이는 범위에 대한 AI 참고 의견입니다. 계약도면·승인 자재·현장 합의 및 전문 검토를 대체하지 않습니다.</div><button id="restartButton" class="primary full" type="button">다른 사진 확인</button></section>
 </main>
 <script>
@@ -388,7 +422,7 @@ let data=null,processKey=null,stageId=null,photoBlob=null,previewUrl=null;
 const $=(selector)=>document.querySelector(selector);
 function showMessage(text){$("#message").textContent=text;$("#message").classList.remove("hidden")}function hideMessage(){$("#message").classList.add("hidden");$("#message").textContent=""}
 function selectedStage(){return data?.[processKey]?.stages.find((stage)=>stage.id===stageId)}
-async function initialize(){const [processResponse,statusResponse]=await Promise.all([fetch("/api/processes"),fetch("/api/status")]);if(!processResponse.ok||!statusResponse.ok)throw new Error("서버 정보를 불러오지 못했습니다.");data=await processResponse.json();const status=await statusResponse.json();const badge=$("#serverStatus");badge.textContent=status.configured?("AI 연결됨 · "+status.model+" · 1일 "+status.maxRequestsPerIp+"회"):"AI API 키 설정 필요";badge.className="server-status "+(status.configured?"ok":"bad");$("#accessWrap").classList.toggle("hidden",!status.accessCodeRequired);renderProcesses()}
+async function initialize(){const [processResponse,statusResponse]=await Promise.all([fetch("/api/processes"),fetch("/api/status")]);if(!processResponse.ok||!statusResponse.ok)throw new Error("서버 정보를 불러오지 못했습니다.");data=await processResponse.json();const status=await statusResponse.json();const badge=$("#serverStatus");badge.textContent=status.configured?("Gemini 연결됨 · "+status.model+" · 1일 "+status.maxRequestsPerIp+"회"):"Gemini API 키 설정 필요";badge.className="server-status "+(status.configured?"ok":"bad");$("#accessWrap").classList.toggle("hidden",!status.accessCodeRequired);renderProcesses()}
 function renderProcesses(){const list=$("#processes");list.replaceChildren();Object.entries(data).forEach(([key,proc])=>{const button=document.createElement("button");button.type="button";button.className="choice"+(processKey===key?" selected":"");const name=document.createElement("b");name.textContent=proc.name;const kcs=document.createElement("small");kcs.textContent=proc.kcs;const desc=document.createElement("span");desc.textContent=proc.desc;button.append(name,kcs,desc);button.onclick=()=>chooseProcess(key);list.appendChild(button)})}
 function chooseProcess(key){processKey=key;stageId=null;clearPhoto();hideResult();renderProcesses();renderStages();$("#stageCard").classList.remove("hidden");$("#photoCard").classList.add("hidden");$("#guide").classList.add("hidden");$("#stageCard").scrollIntoView({behavior:"smooth",block:"start"})}
 function renderStages(){const list=$("#stages");list.replaceChildren();data[processKey].stages.forEach((stage)=>{const button=document.createElement("button");button.type="button";button.className="choice"+(stageId===stage.id?" selected":"");button.textContent=stage.label;button.onclick=()=>chooseStage(stage.id);list.appendChild(button)})}
@@ -406,4 +440,4 @@ $("#cameraButton").onclick=()=>$("#cameraInput").click();$("#galleryButton").onc
 </html>`;
 
 app.get("/", (_req, res) => res.type("html").send(html));
-app.listen(PORT, "0.0.0.0", () => console.log(`AI inspection app running on port ${PORT}`));
+app.listen(PORT, "0.0.0.0", () => console.log(`Gemini inspection app running on port ${PORT}`));
