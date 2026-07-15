@@ -43,51 +43,51 @@ const DATA = {
     stages: [
       {
         id: "i1",
-        label: "바탕면 시공 전",
-        guide: "단열재를 붙이기 전 맨 벽면 전체를 찍어주세요.",
-        expected: "단열재와 목재틀이 설치되기 전 벽 바탕면이 넓게 보여야 한다.",
-        criteria: "벽 바탕면의 면정리와 청소 상태를 확인한다. 이물질, 들뜬 기존 마감, 곰팡이 또는 누수 의심 흔적이 사진에 보이는지 확인한다.",
-        items: ["벽면 전체 상태", "면 정리·청소", "이물질·곰팡이 의심 부위"]
+        label: "시공 전 바탕상태",
+        guide: "단열재 시공 전 벽면 전체와 창호·천장·바닥 접합부가 보이게 찍어주세요.",
+        expected: "단열재 시공 전 벽면 전체와 창호·천장·바닥 접합부가 함께 보여야 한다.",
+        criteria: "벽면 전체의 촬영 여부와 면 정리 상태를 확인한다. 균열, 돌출물, 기존 마감재, 오염, 곰팡이 또는 누수 의심 흔적이 사진에 보이면 기준 미달로 표시한다.",
+        items: ["벽면 전체 확인", "면 정리 상태", "오염·곰팡이·누수 의심"]
       },
       {
         id: "i2",
-        label: "단열재 바탕 부착",
-        guide: "단열재가 벽에 붙은 상태를 벽면 전체가 보이게 찍어주세요.",
-        expected: "판상 단열재가 벽에 부착된 전체 모습과 이음부가 보여야 한다.",
-        criteria: "단열재가 벽 바탕면에 직접 붙고 연속적으로 이어지는지 확인한다. 단열재 사이 벌어진 틈, 목재틀을 먼저 설치하고 틀 사이에만 단열재를 끼운 형태는 추가 확인 대상으로 본다.",
-        items: ["벽면 직접 부착", "단열재 연속성·틈", "목재틀과 시공 순서"]
+        label: "단열재 전체 시공상태",
+        guide: "단열재가 시공된 벽 전체와 모서리가 한 화면에 보이게 찍어주세요.",
+        expected: "판상 단열재, 스프레이폼 또는 충진형 단열재가 시공된 벽 전체와 경계부가 보여야 한다.",
+        criteria: "공법을 판상형으로 한정하지 않는다. 스프레이폼 특유의 작은 표면 요철과 색상 차이는 정상적인 시공 흔적으로 보고 기준미달 사유로 사용하지 않는다. 벽 전체에 단열재가 연속적으로 보이고 큰 바탕 노출, 명확한 빈 공간 또는 탈락이 없으면 사진 기준 적합으로 판단한다. 사진 밖이나 가려진 부분은 추정하지 않는다.",
+        items: ["전체 시공범위", "단열재 연속성", "큰 누락·탈락 여부"]
       },
       {
         id: "i3",
-        label: "이음부 처리",
-        guide: "단열재 가장자리와 이음새를 가까이서 찍어주세요.",
-        expected: "단열재 판 사이 이음선, 가장자리, 폼 또는 테이프가 근접 촬영되어야 한다.",
-        criteria: "단열재 판 사이와 상단·하단·양측 가장자리의 틈을 확인한다. 우레탄폼 충진과 단열테이프 처리가 사진에 실제로 보이는지 확인하며, 보이지 않으면 추정하지 않는다.",
-        items: ["이음부 틈", "우레탄폼 충진", "단열테이프 처리"]
+        label: "틀·구조체 주변 시공상태",
+        guide: "목재틀 또는 금속틀과 틀 사이 단열재가 함께 보이도록 벽면 전체를 찍어주세요.",
+        expected: "틀 또는 구조체와 틀 사이에 시공된 단열재의 전체 모습이 함께 보여야 한다.",
+        criteria: "사진에 보이는 범위에서 틀 또는 구조체가 식별되고 각 구획에 단열재가 채워져 있는지 확인한다. 작은 표면 요철은 허용하며, 큰 빈 공간, 바탕 노출 또는 명확한 누락이 보일 때만 기준미달로 판단한다. 틀 간격과 규격은 사진만으로 단정하지 않는다.",
+        items: ["틀·구조체 식별", "구획 내 단열 충진", "큰 빈 공간·누락 여부"]
       },
       {
         id: "i4",
-        label: "두께 확인",
-        guide: "단열재 단면에 줄자를 대고 눈금이 보이게 찍어주세요.",
-        expected: "단열재 단면과 줄자가 동시에 보이고 눈금을 읽을 수 있어야 한다.",
-        criteria: "단열재 단면과 줄자 시작점, 눈금이 동시에 보여야 한다. 사진에서 읽히는 실측값만 설명하고, 목표 두께 적합 여부는 계약도면·승인 자재·현장 합의가 없으면 단정하지 않는다.",
-        items: ["단면 노출", "줄자 위치", "눈금·실측값"]
+        label: "단열재 두께 측정",
+        guide: "측정 위치와 단열재 단면, 측정도구의 기준점과 눈금이 모두 보이게 찍어주세요.",
+        expected: "단열재 단면, 측정도구의 기준점과 최종 눈금이 동시에 보여야 한다.",
+        criteria: "줄자 또는 버니어캘리퍼스가 단열재에 실제로 접촉하고 측정 위치와 도구 눈금이 함께 보이면 측정 증빙 사진으로 적합하다. 정확한 수치가 선명하면 실측값을 설명하고, 목표 두께 적합 여부는 별도 설계기준이 없으면 단정하지 않는다. 사진이 작거나 흐려 도구와 접촉 위치를 구분할 수 없을 때만 판독불가로 판단한다.",
+        items: ["측정도구 식별", "단열재 접촉·기준점", "측정 증빙 확인"]
       },
       {
         id: "i5",
-        label: "목재틀 설치",
-        guide: "목재틀과 단열재가 함께 보이도록 벽면 전체를 찍어주세요.",
-        expected: "단열재와 목재틀의 전후 관계가 확인되어야 한다.",
-        criteria: "목재틀이 단열재 위에 설치되어 보이는지, 틀 뒤로 단열재가 연속되는지 확인한다. 틀 사이에만 단열재를 끼운 형태인지 사진에서 구분한다.",
-        items: ["목재틀 설치 위치", "틀 뒤 단열재 연속성", "틀 사이 끼움 여부"]
+        label: "마감재 시공 중",
+        guide: "단열재가 일부 보이고 석고보드 등 마감재를 설치하는 장면이 함께 보이게 찍어주세요.",
+        expected: "마감재로 덮기 전 단열재 노출부와 마감재 시공 중인 벽면이 한 화면에 보여야 한다.",
+        criteria: "단열재가 실제로 시공된 상태에서 석고보드 등 마감재 설치가 진행 중임을 확인하는 기록 사진이다. 단열재 노출부, 설치 중인 마감재와 전체 작업 장면이 함께 보이면 사진 기준 적합으로 판단한다. 이미 가려진 내부 단열상태는 추정하지 않는다.",
+        items: ["단열재 노출부 확인", "마감재 시공단계", "전체 작업장면 기록"]
       },
       {
         id: "i6",
-        label: "석고보드 시공",
-        guide: "보드 단면 또는 겹수와 이음 위치가 보이게 찍어주세요.",
-        expected: "석고보드 시공 중인 벽과 단면 또는 이음 위치가 보여야 한다.",
-        criteria: "계약도면 또는 시방에서 요구한 석고보드 겹수를 사진으로 확인할 수 있는지 본다. 2겹 조건이라면 1겹과 2겹의 이음 위치가 서로 엇갈리는지 확인한다.",
-        items: ["겹수 확인 가능성", "보드 이음 위치", "이음 엇갈림 여부"]
+        label: "석고보드 마감 완료",
+        guide: "석고보드 시공이 끝난 벽 전체와 모서리·창호 주변이 보이게 찍어주세요.",
+        expected: "석고보드로 마감된 벽 전체와 주요 이음부, 모서리 또는 창호 주변이 보여야 한다.",
+        criteria: "이 단계는 숨겨진 단열재가 아니라 마감 완료 사진의 기록성을 확인한다. 벽면 전체가 마감되어 있고 큰 파손, 벌어진 이음 또는 미시공 구간이 보이지 않으면 사진 기준 적합으로 판단한다. 마감재 뒤 단열상태는 별도 시공 전 사진으로 확인해야 한다.",
+        items: ["벽면 마감 완료", "보드 이음·모서리", "큰 파손·미시공 여부"]
       }
     ]
   },
@@ -158,7 +158,7 @@ const RESULT_SCHEMA = {
         type: "object",
         properties: {
           name: { type: "string" },
-          status: { type: "string", enum: ["사진상확인", "추가확인필요", "판독불가"] },
+          status: { type: "string", enum: ["기준적합", "기준미달", "추가사진필요", "판독불가"] },
           evidence: { type: "string" },
           reason: { type: "string" }
         },
@@ -194,7 +194,14 @@ function buildPrompt(proc, stage) {
 7. '부실시공', '위법', '하자 확정' 같은 법적·최종 단정 표현을 사용하지 않습니다.
 8. 수치, 두께, 높이, 도포 횟수는 줄자 눈금이나 공정 기록이 없으면 단정하지 않습니다.
 9. items는 위 확인 항목과 같은 순서로 정확히 3개 작성합니다.
-10. 발주자와 시공자 모두 이해할 수 있는 중립적인 한국어로 답합니다.`;
+10. 각 items의 status는 아래 네 값 중 하나만 사용합니다.
+   - 기준적합: 해당 확인 항목과 판단 근거가 사진에 명확히 보이고, 사진에서 보이는 문제도 없습니다.
+   - 기준미달: 누락, 빈틈, 오염, 손상 등 보완이 필요한 상태가 사진에 실제로 보입니다.
+   - 추가사진필요: 해당 위치, 전체 범위, 근접 장면 또는 측정 기준이 사진에 없어 확인할 수 없습니다.
+   - 판독불가: 사진이 흐리거나 어둡거나 가려졌거나 눈금을 읽을 수 없습니다.
+11. 사진 밖이나 마감재 뒤에 가려진 상태를 추정하지 않습니다. 보이지 않는 항목을 기준적합으로 표시하지 않습니다.
+12. '다음 공정을 진행해도 된다' 또는 '시공이 최종 합격이다'라고 안내하지 않습니다.
+13. 발주자와 시공자 모두 이해할 수 있는 중립적인 한국어로 답합니다.`;
 }
 
 function extractGeminiText(data) {
@@ -230,9 +237,29 @@ function parseGeminiJson(text) {
   throw new Error("Gemini 분석 결과 형식을 읽지 못했습니다. 응답이 중간에 잘렸거나 형식이 깨졌습니다.");
 }
 
+function calculateOverallResult(result) {
+  if (result.photo_match === "식별불가") return "판독불가";
+  if (result.photo_match !== "선택단계일치") return "추가사진필요";
+
+  const statuses = result.items.map((item) => item.status);
+  if (statuses.includes("기준미달")) return "불합격";
+  if (statuses.includes("판독불가")) return "판독불가";
+  if (statuses.includes("추가사진필요")) return "추가사진필요";
+  if (statuses.length === 3 && statuses.every((status) => status === "기준적합")) return "합격";
+  return "판독불가";
+}
+
+function finalizeResult(result) {
+  result.overall_result = calculateOverallResult(result);
+  if (result.overall_result === "합격") {
+    result.next_action = "현재 사진 기준으로 선택한 검수항목을 모두 확인했습니다. 최종 판단은 현장 검수자가 확인하세요.";
+  }
+  return result;
+}
+
 function normalizeResult(raw, stage) {
   const allowedMatch = new Set(["선택단계일치", "같은공정다른단계", "다른건설공정", "무관한사진", "식별불가"]);
-  const allowedStatus = new Set(["사진상확인", "추가확인필요", "판독불가"]);
+  const allowedStatus = new Set(["기준적합", "기준미달", "추가사진필요", "판독불가"]);
   const result = {
     photo_match: allowedMatch.has(raw.photo_match) ? raw.photo_match : "식별불가",
     scene: String(raw.scene || "사진 장면을 충분히 식별하지 못했습니다."),
@@ -253,7 +280,7 @@ function normalizeResult(raw, stage) {
     }));
     result.summary = "선택한 공정·단계와 사진이 일치하지 않아 항목별 검수를 진행하지 않았습니다.";
     result.next_action = result.retake_guide || stage.guide;
-    return result;
+    return finalizeResult(result);
   }
 
   const incoming = Array.isArray(raw.items) ? raw.items : [];
@@ -267,7 +294,7 @@ function normalizeResult(raw, stage) {
     };
   });
   if (!result.summary) result.summary = "사진에서 확인되는 범위만 항목별로 검토했습니다.";
-  return result;
+  return finalizeResult(result);
 }
 
 const requestCounts = new Map();
@@ -429,8 +456,8 @@ const html = String.raw`<!doctype html>
 <meta name="theme-color" content="#16191d">
 <title>AI 공정 사진 확인</title>
 <style>
-:root{--ink:#16191d;--orange:#ff5a1f;--ground:#f1f2f0;--line:#e1e4e2;--muted:#5d646b;--green:#1e9e5a;--amber:#ae6500;--gray:#687078}
-*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}body{margin:0;background:var(--ground);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif}button{font:inherit;cursor:pointer}.hidden{display:none!important}.stripe{height:10px;background:repeating-linear-gradient(-45deg,var(--orange) 0 14px,var(--ink) 14px 28px)}header,main{max-width:620px;margin:auto}header{padding:26px 19px 8px}h1{font-size:31px;line-height:1.2;letter-spacing:-.03em;margin:0 0 10px}header p{color:#50575e;line-height:1.6;font-size:14px;margin:0}.server-status{display:inline-block;margin-top:11px;padding:6px 9px;border-radius:999px;background:#e9ecef;font-size:11.5px;font-weight:800}.server-status.ok{background:#e7f6ee;color:#12683d}.server-status.bad{background:#fcf1dc;color:#805000}main{padding:14px}.card,.result{border-radius:14px;padding:16px;margin-bottom:13px}.card{background:white;border:1px solid var(--line)}.result{background:var(--ink);color:white}.step{font-weight:850;margin-bottom:12px}.grid{display:grid;gap:8px}.choice{width:100%;text-align:left;padding:12px;border-radius:9px;border:1.5px solid var(--line);background:#fafbfa}.choice.selected{border-color:var(--orange);background:#fffaf7}.choice b,.choice small,.choice span{display:block}.choice small{color:var(--orange);font-weight:750;margin:3px 0}.choice span{font-size:12.5px;color:var(--muted)}.guide{margin-top:10px;background:#fff1e8;padding:10px;border-radius:8px;font-size:13px;line-height:1.5}.upload{text-align:center;border:2px dashed #c7ccca;padding:24px 12px;border-radius:10px;background:#fafbfa}.upload b,.upload span{display:block}.upload span{font-size:12px;color:var(--muted);margin-top:5px}.buttons{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.primary,.secondary{padding:12px;border-radius:9px;font-weight:850}.primary{background:var(--orange);color:white;border:0}.secondary{background:white;border:1.5px solid #c6cbc9}.primary:disabled{opacity:.55;cursor:default}.file-trigger{display:flex;align-items:center;justify-content:center;text-align:center;cursor:pointer;min-height:46px}.file-input{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}.camera-help{font-size:11.5px;color:var(--muted);line-height:1.5;margin:8px 2px 0;text-align:center}#preview{width:100%;max-height:480px;object-fit:contain;background:#111;border-radius:9px}.loading{text-align:center;color:var(--muted);font-size:13px;padding:15px 0 2px}.spinner{width:27px;height:27px;border-radius:50%;border:3px solid #e0e3e1;border-top-color:var(--orange);margin:auto;animation:spin .8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}.match,.scene{padding:10px;border-radius:8px;font-size:13px;line-height:1.5;margin-top:10px}.match.ok{background:#19372a;color:#bce8d0}.match.no{background:#3a291f;color:#ffd0ba}.scene{background:#20252b;color:#cbd0d4}.item{background:white;color:var(--ink);padding:11px;border-radius:9px;margin-top:9px}.item-head{display:flex;justify-content:space-between;gap:8px;align-items:center}.item-head b{font-size:13.5px}.status{font-size:11px;font-weight:900;padding:4px 7px;border-radius:4px;white-space:nowrap}.status.good{background:#e7f6ee;color:var(--green)}.status.check{background:#fcf1dc;color:var(--amber)}.status.unreadable{background:#eef0f1;color:var(--gray)}.item p{font-size:12.5px;color:#50575e;line-height:1.5;margin:7px 0 0}.summary{border-top:1px solid #343a40;margin-top:12px;padding-top:12px;font-size:13px;line-height:1.55}.summary p{margin:0}.summary p+p{margin-top:7px;color:#ffc4a9}.full{width:100%;margin-top:11px}.msg{margin-top:10px;background:#fbeae7;color:#a63322;padding:10px;border-radius:8px;font-size:13px;line-height:1.5}.access{margin-bottom:11px}.access label{display:block;font-size:12px;font-weight:800}.access input{width:100%;margin-top:6px;border:1px solid #c9cecc;border-radius:8px;padding:11px 12px;font:inherit}.privacy{font-size:11px;color:#747b81;line-height:1.5;margin-top:10px}.disclaimer{margin-top:12px;background:#20252b;color:#a6adb4;border-radius:8px;padding:10px;font-size:11px;line-height:1.55}@media(prefers-reduced-motion:reduce){.spinner{animation:none}}
+:root{--ink:#16191d;--orange:#ff5a1f;--ground:#f1f2f0;--line:#e1e4e2;--muted:#5d646b;--green:#1e9e5a;--red:#c9362b;--amber:#ae6500;--gray:#687078}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}body{margin:0;background:var(--ground);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif}button{font:inherit;cursor:pointer}.hidden{display:none!important}.stripe{height:10px;background:repeating-linear-gradient(-45deg,var(--orange) 0 14px,var(--ink) 14px 28px)}header,main{max-width:620px;margin:auto}header{padding:26px 19px 8px}h1{font-size:31px;line-height:1.2;letter-spacing:-.03em;margin:0 0 10px}header p{color:#50575e;line-height:1.6;font-size:14px;margin:0}.server-status{display:inline-block;margin-top:11px;padding:6px 9px;border-radius:999px;background:#e9ecef;font-size:11.5px;font-weight:800}.server-status.ok{background:#e7f6ee;color:#12683d}.server-status.bad{background:#fcf1dc;color:#805000}main{padding:14px}.card,.result{border-radius:14px;padding:16px;margin-bottom:13px}.card{background:white;border:1px solid var(--line)}.result{background:var(--ink);color:white}.step{font-weight:850;margin-bottom:12px}.grid{display:grid;gap:8px}.choice{width:100%;text-align:left;padding:12px;border-radius:9px;border:1.5px solid var(--line);background:#fafbfa}.choice.selected{border-color:var(--orange);background:#fffaf7}.choice b,.choice small,.choice span{display:block}.choice small{color:var(--orange);font-weight:750;margin:3px 0}.choice span{font-size:12.5px;color:var(--muted)}.guide{margin-top:10px;background:#fff1e8;padding:10px;border-radius:8px;font-size:13px;line-height:1.5}.upload{text-align:center;border:2px dashed #c7ccca;padding:24px 12px;border-radius:10px;background:#fafbfa}.upload b,.upload span{display:block}.upload span{font-size:12px;color:var(--muted);margin-top:5px}.buttons{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.primary,.secondary{padding:12px;border-radius:9px;font-weight:850}.primary{background:var(--orange);color:white;border:0}.secondary{background:white;border:1.5px solid #c6cbc9}.primary:disabled{opacity:.55;cursor:default}.file-trigger{display:flex;align-items:center;justify-content:center;text-align:center;cursor:pointer;min-height:46px}.file-input{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}.camera-help{font-size:11.5px;color:var(--muted);line-height:1.5;margin:8px 2px 0;text-align:center}#preview{width:100%;max-height:480px;object-fit:contain;background:#111;border-radius:9px}.loading{text-align:center;color:var(--muted);font-size:13px;padding:15px 0 2px}.spinner{width:27px;height:27px;border-radius:50%;border:3px solid #e0e3e1;border-top-color:var(--orange);margin:auto;animation:spin .8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}.overall{margin:0 0 12px;padding:14px;border-radius:10px;font-size:20px;font-weight:950;line-height:1.35}.overall small{display:block;margin-top:4px;font-size:12px;font-weight:650}.overall.pass{background:#e7f6ee;color:#12683d}.overall.fail{background:#fdebea;color:#9f241d}.overall.more{background:#fff0d7;color:#7d4900}.overall.unreadable{background:#eef0f1;color:#515960}.match,.scene{padding:10px;border-radius:8px;font-size:13px;line-height:1.5;margin-top:10px}.match.ok{background:#19372a;color:#bce8d0}.match.no{background:#3a291f;color:#ffd0ba}.scene{background:#20252b;color:#cbd0d4}.item{background:white;color:var(--ink);padding:11px;border-radius:9px;margin-top:9px}.item-head{display:flex;justify-content:space-between;gap:8px;align-items:center}.item-head b{font-size:13.5px}.status{font-size:11px;font-weight:900;padding:4px 7px;border-radius:4px;white-space:nowrap}.status.good{background:#e7f6ee;color:var(--green)}.status.fail{background:#fdebea;color:var(--red)}.status.check{background:#fcf1dc;color:var(--amber)}.status.unreadable{background:#eef0f1;color:var(--gray)}.item p{font-size:12.5px;color:#50575e;line-height:1.5;margin:7px 0 0}.summary{border-top:1px solid #343a40;margin-top:12px;padding-top:12px;font-size:13px;line-height:1.55}.summary p{margin:0}.summary p+p{margin-top:7px;color:#ffc4a9}.full{width:100%;margin-top:11px}.msg{margin-top:10px;background:#fbeae7;color:#a63322;padding:10px;border-radius:8px;font-size:13px;line-height:1.5}.access{margin-bottom:11px}.access label{display:block;font-size:12px;font-weight:800}.access input{width:100%;margin-top:6px;border:1px solid #c9cecc;border-radius:8px;padding:11px 12px;font:inherit}.privacy{font-size:11px;color:#747b81;line-height:1.5;margin-top:10px}.disclaimer{margin-top:12px;background:#20252b;color:#a6adb4;border-radius:8px;padding:10px;font-size:11px;line-height:1.55}@media(prefers-reduced-motion:reduce){.spinner{animation:none}}
 </style>
 </head>
 <body>
@@ -448,7 +475,7 @@ const html = String.raw`<!doctype html>
 <div id="empty"><div class="upload">📷<b>사진 촬영 또는 앨범 선택</b><span>전체 모습과 핵심 부위가 함께 보이게 촬영하세요.</span></div><div class="buttons"><label for="cameraInput" class="primary file-trigger">사진 촬영</label><label for="galleryInput" class="secondary file-trigger">앨범 선택</label></div><input id="cameraInput" class="file-input" type="file" accept="image/*" capture="environment"><input id="galleryInput" class="file-input" type="file" accept="image/*"><p class="camera-help">촬영 버튼이 열리지 않으면 ‘앨범 선택’을 누른 뒤 카메라를 선택하세요.</p></div>
 <div id="previewBox" class="hidden"><img id="preview" alt="선택한 사진"><div class="buttons"><button id="againButton" class="secondary" type="button">다시 선택</button><button id="analyzeButton" class="primary" type="button">AI 검수 시작</button></div></div>
 <div id="loading" class="loading hidden"><div class="spinner"></div><p>사진 종류와 선택 단계를 먼저 확인하고 있습니다…</p></div><div id="message" class="msg hidden"></div><p class="privacy">사진은 이 앱 서버에 저장하지 않으며 AI 분석을 위해 Google Gemini로 전송됩니다.</p></section>
-<section id="result" class="result hidden"><b>AI 1차 확인표</b><div id="match" class="match"></div><div id="scene" class="scene"></div><div id="items"></div><div class="summary"><p id="summary"></p><p id="next"></p></div><div class="disclaimer">본 결과는 사진에서 보이는 범위에 대한 AI 참고 의견입니다. 계약도면·승인 자재·현장 합의 및 전문 검토를 대체하지 않습니다.</div><button id="restartButton" class="primary full" type="button">다른 사진 확인</button></section>
+<section id="result" class="result hidden"><div id="overall" class="overall"></div><b>AI 항목별 확인표</b><div id="match" class="match"></div><div id="scene" class="scene"></div><div id="items"></div><div class="summary"><p id="summary"></p><p id="next"></p></div><div class="disclaimer">본 결과는 선택한 항목과 사진에서 보이는 범위에 대한 AI 사전검수입니다. 법적·최종 합격 판정이 아니며 계약도면·승인 자재·현장 합의 및 전문 검토를 대체하지 않습니다.</div><button id="restartButton" class="primary full" type="button">다른 사진 확인</button></section>
 </main>
 <script>
 "use strict";
@@ -465,8 +492,9 @@ function clearPhoto(){if(previewUrl)URL.revokeObjectURL(previewUrl);photoBlob=nu
 function hideResult(){$("#result").classList.add("hidden")}
 async function resizeImage(file,maxDimension=1600){if(!["image/jpeg","image/png","image/webp"].includes(file.type))throw new Error("이 사진 형식은 브라우저에서 읽을 수 없습니다. HEIC 사진이면 화면 캡처 후 캡처본을 올려주세요.");const url=URL.createObjectURL(file);try{const image=new Image();image.decoding="async";image.src=url;await image.decode();let width=image.naturalWidth,height=image.naturalHeight;const scale=Math.min(1,maxDimension/Math.max(width,height));width=Math.max(1,Math.round(width*scale));height=Math.max(1,Math.round(height*scale));const canvas=document.createElement("canvas");canvas.width=width;canvas.height=height;const context=canvas.getContext("2d",{alpha:false});context.drawImage(image,0,0,width,height);const blob=await new Promise((resolve)=>canvas.toBlob(resolve,"image/jpeg",.86));if(!blob)throw new Error("사진 변환에 실패했습니다.");return blob}finally{URL.revokeObjectURL(url)}}
 async function pickFile(file){if(!file)return;hideMessage();try{photoBlob=await resizeImage(file);if(previewUrl)URL.revokeObjectURL(previewUrl);previewUrl=URL.createObjectURL(photoBlob);$("#preview").src=previewUrl;$("#empty").classList.add("hidden");$("#previewBox").classList.remove("hidden")}catch(error){clearPhoto();showMessage(error.message)}}
-function statusClass(status){if(status==="사진상확인")return"good";if(status==="추가확인필요")return"check";return"unreadable"}
-function renderResult(payload){const result=payload.result;const isMatch=result.photo_match==="선택단계일치";const match=$("#match");match.textContent="사진 일치 여부: "+result.photo_match;match.className="match "+(isMatch?"ok":"no");$("#scene").textContent="사진에서 보이는 장면: "+result.scene;const list=$("#items");list.replaceChildren();(result.items||[]).forEach((item)=>{const card=document.createElement("div");card.className="item";const head=document.createElement("div");head.className="item-head";const name=document.createElement("b");name.textContent=item.name;const status=document.createElement("span");status.className="status "+statusClass(item.status);status.textContent=item.status;head.append(name,status);const evidence=document.createElement("p");evidence.textContent="보이는 근거: "+item.evidence;const reason=document.createElement("p");reason.textContent=item.reason;card.append(head,evidence,reason);list.appendChild(card)});$("#summary").textContent=result.summary;$("#next").textContent="다음 확인 — "+result.next_action;$("#result").classList.remove("hidden");$("#result").scrollIntoView({behavior:"smooth",block:"start"})}
+function statusClass(status){if(status==="기준적합")return"good";if(status==="기준미달")return"fail";if(status==="추가사진필요")return"check";return"unreadable"}
+function overallInfo(result){const info={합격:["pass","사진검수 결과: 합격","선택한 검수항목이 모두 사진에서 확인됐습니다."],불합격:["fail","사진검수 결과: 불합격","사진에서 보완이 필요한 항목이 확인됐습니다."],추가사진필요:["more","사진검수 결과: 추가사진 필요","현재 사진만으로 합격 여부를 확정할 수 없습니다."],판독불가:["unreadable","사진검수 결과: 판독 불가","사진 품질이나 촬영 범위 때문에 핵심항목을 판독하지 못했습니다."]};return info[result]||info.판독불가}
+function renderResult(payload){const result=payload.result;const overall=$("#overall");const [overallClass,overallTitle,overallDescription]=overallInfo(result.overall_result);overall.className="overall "+overallClass;overall.replaceChildren();const overallText=document.createTextNode(overallTitle);const overallSmall=document.createElement("small");overallSmall.textContent=overallDescription;overall.append(overallText,overallSmall);const isMatch=result.photo_match==="선택단계일치";const match=$("#match");match.textContent="사진 일치 여부: "+result.photo_match;match.className="match "+(isMatch?"ok":"no");$("#scene").textContent="사진에서 보이는 장면: "+result.scene;const list=$("#items");list.replaceChildren();(result.items||[]).forEach((item)=>{const card=document.createElement("div");card.className="item";const head=document.createElement("div");head.className="item-head";const name=document.createElement("b");name.textContent=item.name;const status=document.createElement("span");status.className="status "+statusClass(item.status);status.textContent=item.status;head.append(name,status);const evidence=document.createElement("p");evidence.textContent="보이는 근거: "+item.evidence;const reason=document.createElement("p");reason.textContent=item.reason;card.append(head,evidence,reason);list.appendChild(card)});$("#summary").textContent=result.summary;$("#next").textContent="권장 조치 — "+result.next_action;$("#result").classList.remove("hidden");$("#result").scrollIntoView({behavior:"smooth",block:"start"})}
 async function analyze(){if(!photoBlob||!processKey||!stageId)return;const button=$("#analyzeButton");button.disabled=true;button.textContent="AI 확인 중…";$("#loading").classList.remove("hidden");hideMessage();hideResult();try{const form=new FormData();form.append("photo",photoBlob,"inspection-"+Date.now()+".jpg");form.append("processKey",processKey);form.append("stageId",stageId);form.append("accessCode",$("#accessCode").value.trim());const response=await fetch("/api/analyze",{method:"POST",body:form});const payload=await response.json();if(!response.ok)throw new Error(payload.error||"AI 분석에 실패했습니다.");renderResult(payload)}catch(error){showMessage(error.message)}finally{button.disabled=false;button.textContent="AI 검수 시작";$("#loading").classList.add("hidden")}}
 $("#cameraInput").onchange=(event)=>pickFile(event.target.files?.[0]);$("#galleryInput").onchange=(event)=>pickFile(event.target.files?.[0]);$("#againButton").onclick=clearPhoto;$("#analyzeButton").onclick=analyze;$("#restartButton").onclick=()=>{clearPhoto();hideResult();$("#photoCard").scrollIntoView({behavior:"smooth",block:"start"})};initialize().catch((error)=>showMessage(error.message));
 </script>
@@ -474,4 +502,9 @@ $("#cameraInput").onchange=(event)=>pickFile(event.target.files?.[0]);$("#galler
 </html>`;
 
 app.get("/", (_req, res) => res.type("html").send(html));
-app.listen(PORT, "0.0.0.0", () => console.log(`Gemini inspection app running on port ${PORT}`));
+
+if (require.main === module) {
+  app.listen(PORT, "0.0.0.0", () => console.log(`Gemini inspection app running on port ${PORT}`));
+}
+
+module.exports = { app, DATA, calculateOverallResult, normalizeResult };
